@@ -1,6 +1,0 @@
-#!/bin/bash
-
-function histg()
-{
-  history | grep $1 | sort -k2 | uniq -f 1 | sort -n | grep $1
-}
