@@ -1,21 +1,41 @@
    1   2063  ls -lh
-   2   2540  ls -lt
-   3   2584  ls -lRt
-   4   2594  ls -lh | grep segment
-   5   2816  ls -lrt .
-   6   2817  ls -lRt .
-   7   3075  ls -l SotesteValpar3/fragments/ | wc -l
-   8   3076  ls -l SotesteValper2/fragments/ | wc -l
-   9   3077  ls -la SotesteValper2/fragments/ | wc -l
-  10   3078  ls -la SotesteValper2/fragments/
-  11   3079  ls -l SotesteValper2/fragments/
-  12   3408  ls -la /dev/sd*
-  13   3409  ls -la
-  14   6945  ls -l | grep mac
-  15   6946  ls -lh | grep mac
-  16   7437  ls -lrth | grep dict
-  17   7548  ls -lrth
-  18  10097  ls -l
-  19  10554  ls -lr
-  20  10793  ls -lrt
-  21  11297  ls -lr *
+   2   2290  ls -r .
+   3   2295  ls -r * | grep ste
+   4   2540  ls -lt
+   5   2584  ls -lRt
+   6   2594  ls -lh | grep segment
+   7   2816  ls -lrt .
+   8   2817  ls -lRt .
+   9   3075  ls -l SotesteValpar3/fragments/ | wc -l
+  10   3076  ls -l SotesteValper2/fragments/ | wc -l
+  11   3077  ls -la SotesteValper2/fragments/ | wc -l
+  12   3078  ls -la SotesteValper2/fragments/
+  13   3079  ls -l SotesteValper2/fragments/
+  14   3288  ls -dR
+  15   3289  ls -dr
+  16   3408  ls -la /dev/sd*
+  17   3409  ls -la
+  18   5422  ls -a | grep py
+  19   6945  ls -l | grep mac
+  20   6946  ls -lh | grep mac
+  21   7437  ls -lrth | grep dict
+  22   7548  ls -lrth
+  23   8797  ls -a | grep git
+  24   8973  ls -al ~./ssh
+  25   8974  ls -al ~/.ssh
+  26   9697  ls -a | grep arduino
+  27  10097  ls -l
+  28  10135  ls -a
+  29  10512  ls -al
+  30  10554  ls -lr
+  31  10768  ls -
+  32  10793  ls -lrt
+  33  11252  ls -ar
+  34  11278  ls -r * | wc -w
+  35  11294  ls -r | wc
+  36  11295  ls -r
+  37  11297  ls -lr *
+  38  11298  ls -r * | wc
+  39  11299  ls -r *
+  40  12401  hg 'ls -'
+  41  12402  hg "ls -"

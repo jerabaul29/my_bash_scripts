@@ -20,7 +20,6 @@ set -o history             # enable history
 # TODO: automate how to set the PATH_TO_SAVELAST and share it with histx
 PATH_TO_SAVELAST="/home/jrlab/Desktop/Git/MyBashScripts/Data/last_histg_output"
 
-echo "issuing: ${COMMAND}"
 OUTPUT="$(history | grep "$1" | sort -k2 | uniq -f 1 | sort -n | awk '{printf("% 4d  %s\n", NR, $0)}')"
 echo "$(echo "${OUTPUT}" | grep --color=always "$1")"
 
