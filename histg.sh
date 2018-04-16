@@ -21,6 +21,9 @@ set -o history             # enable history
 PATH_TO_SAVELAST="/home/jrlab/Desktop/Git/MyBashScripts/Data/last_histg_output"
 
 OUTPUT="$(history | grep "$1" | sort -k2 | uniq -f 1 | sort -n | awk '{printf("% 4d  %s\n", NR, $0)}')"
+# TODO: allow to grep several patterns just by putting one after the other: hg avr src .ino
+# at this point, already no duplicates, and ordered: just need to apply more grep
+# TODO: instead of using numbers for the calls to hx, option to use letters
 echo "$(echo "${OUTPUT}" | grep --color=always "$1")"
 
 > ${PATH_TO_SAVELAST}

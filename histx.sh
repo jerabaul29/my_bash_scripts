@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# TODO: no need to type the last histg pattern
-# use: grep histg, and tail, and grep a given field with awk '{print $2}'
-
 if [ "$1" == "-h" ]; then
   echo "A bash script to execute the n-th command shown by histg"
   echo "use: histx number"
