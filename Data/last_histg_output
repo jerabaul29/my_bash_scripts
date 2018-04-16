@@ -1,7 +1,5 @@
-   1   2584  ls -lRt
-   2   2816  ls -lrt .
-   3   2817  ls -lRt .
-   4   7437  ls -lrth | grep dict
-   5  10793  ls -lrt
-   6  12672  ls -lrt 2/
-   7  12797  ls -lrth
+   1  11798  latexdiff --preamble=PREAMBLE_DIFF_NORED.TEX PNAS_CurvingtoFLy_base.tex PNAS_CurvingtoFLy.tex > diff.tex
+   2  11831  latexdiff --preambule=diff_preambule.tex PNASCurvingtofly_SI_base.tex  PNASCurvingtofly_SI.tex > diff.tex
+   3  11839  latexdiff --preamble=preamble_diff_nored.tex PNASCurvingtofly_SI_base.tex PNASCurvingtofly_SI.tex > diff.tex
+   4  11848  latexdiff --preamble=./preamble_diff_nored.tex PNASCurvingtofly_SI_base.tex PNASCurvingtofly_SI.tex > diff.tex
+   5  11851  latexdiff --preamble=PREAMBLE_DIFF_NORED.TEX PNASCurvingtofly_SI_base.tex PNASCurvingtofly_SI.tex > diff.tex
