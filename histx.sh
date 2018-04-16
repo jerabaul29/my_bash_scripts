@@ -11,4 +11,5 @@ fi
 PATH_TO_SAVELAST="/home/jrlab/Desktop/Git/MyBashScripts/Data/last_histg_output"
 
 SELECTED_COMMAND="$(head -$1 ${PATH_TO_SAVELAST} | tail -1 | cut -c 14-)"
+# echo "${SELECTED_COMMAND}"
 eval ${SELECTED_COMMAND}
