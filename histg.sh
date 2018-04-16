@@ -24,14 +24,11 @@ PATH_TO_SAVELAST="/home/jrlab/Desktop/Git/MyBashScripts/Data/last_histg_output"
 # TODO: make sure that the second ordering is by last time of being called
 OUTPUT="$(history | grep -i "$1" | sort -k2 | uniq -f 1 | sort -n)"
 
-echo "$@"
-SAVED="$(echo $@)"
-echo "${SAVED}"
-
 # at this point, already no duplicates, and ordered: just need to apply more grep
+COLORED=${OUTPUT}
 while [ "$1" ]
 do
-#  COLORED="$(echo "${COLORED}" | grep -i --color=always "$1")"
+  COLORED="$(echo "${COLORED}" | grep -i --color=always "$1")"
   OUTPUT="$(echo "${OUTPUT}" | grep -i "$1")"
   shift
 done
@@ -39,16 +36,7 @@ done
 # the output to the console
 # TODO: instead of using numbers for the calls to hx, option to use letters
 OUTPUT="$(echo "${OUTPUT}" | awk '{printf("% 4d  %s\n", NR, $0)}')"
-
-set -- "${SAVED}"
-
-COLORED=${OUTPUT}
-while [ "$1" ]
-do
-  COLORED="$(echo "${COLORED}" | grep -i --color=always "$1")"
-#  OUTPUT="$(echo "${OUTPUT}" | grep -i "$1")"
-  shift
-done
+COLORED="$(echo "${COLORED}" | awk '{printf("% 4d  %s\n", NR, $0)}')"
 
 echo "${COLORED}"
 # echo "${OUTPUT}"

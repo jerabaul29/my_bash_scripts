@@ -1,8 +1,7 @@
-   1    107  pdflatex Template_Basic.tex 
-   2   2285  okular Template_Basic.pdf 
-   3   4647  pdflatex thesis.tex 
-   4   4685  okular PowerLawAnalysis.pdf 
-   5   5273  pdflatex TemplateBasic.tex 
-   6   7784  pdflatex Curvingtofly_SI.tex 
-   7   8213  pdflatex NatureCurvingtofly_SI.tex 
-   8  11824  pdflatex PNASCurvingtofly_SI.tex 
+   1   2584  ls -lRt
+   2   2816  ls -lrt .
+   3   2817  ls -lRt .
+   4   7437  ls -lrth | grep dict
+   5  10793  ls -lrt
+   6  12672  ls -lrt 2/
+   7  12797  ls -lrth
