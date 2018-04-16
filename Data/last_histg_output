@@ -1,8 +1,8 @@
-  107  [01;31m[Kpdf[m[Klatex Template_Ba[01;31m[Ksi[m[Kc.tex 
- 2285  okular Template_Ba[01;31m[Ksi[m[Kc.[01;31m[Kpdf[m[K 
- 4647  [01;31m[Kpdf[m[Klatex the[01;31m[Ksi[m[Ks.tex 
- 4685  okular PowerLawAnaly[01;31m[Ksi[m[Ks.[01;31m[Kpdf[m[K 
- 5273  [01;31m[Kpdf[m[Klatex TemplateBa[01;31m[Ksi[m[Kc.tex 
- 7784  [01;31m[Kpdf[m[Klatex Curvingtofly_[01;31m[KSI[m[K.tex 
- 8213  [01;31m[Kpdf[m[Klatex NatureCurvingtofly_[01;31m[KSI[m[K.tex 
-11824  [01;31m[Kpdf[m[Klatex PNASCurvingtofly_[01;31m[KSI[m[K.tex 
+   1    107  pdflatex Template_Basic.tex 
+   2   2285  okular Template_Basic.pdf 
+   3   4647  pdflatex thesis.tex 
+   4   4685  okular PowerLawAnalysis.pdf 
+   5   5273  pdflatex TemplateBasic.tex 
+   6   7784  pdflatex Curvingtofly_SI.tex 
+   7   8213  pdflatex NatureCurvingtofly_SI.tex 
+   8  11824  pdflatex PNASCurvingtofly_SI.tex 
