@@ -1,6 +1,6 @@
 # My bash scripts
 
-This folder contains a few bash scripts I use on my machines.
+This folder contains a few bash scripts I use on my machines. You can read a bit more about some of those scripts here: https://folk.uio.no/jeanra/Informatics/increasing_bash_productivity.html .
 
 To add a bash script to the terminal:
 
