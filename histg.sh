@@ -26,6 +26,10 @@ OUTPUT="$(history | grep -i "$1" | sort -k2 | tac | uniq -f 1 | sort -n)"
 # remove all commands that are hg and hx
 OUTPUT="$(echo "${OUTPUT}" | grep -v " hg " | grep -v " hx ")"
 
+# remove the history line numbers
+OUTPUT="$(echo "${OUTPUT}" | cut -f2- --delimiter=" ")"
+# echo "${OUTPUT}"
+
 # TODO: do all the grepping only once, and remove color from the one to write (using sed ?)
 # at this point, already no duplicates, and ordered: just need to apply more grep
 COLORED=${OUTPUT}
