@@ -60,3 +60,24 @@ alias hx='/home/jrlab/Desktop/Git/MyBashScripts/histx.sh'
 ```
 
 and I use other scripts (for example, the excellent *z*) for cd-ing.
+
+## zg.sh and zx.sh
+
+While I love using *z*, sometimes I wish I get to see all results that match a search and easily choose one of them. To do this, I have implemented a script (*zg.sh*) and a function (*zg.z*) that work on the same model as *histg* and *histx*.
+
+To use them easily, simply add to your bashrc:
+
+```
+alias zg='/home/jrlab/Desktop/Git/MyBashScripts/zg.sh'
+. /home/jrlab/Desktop/Git/MyBashScripts/zx.sh
+``` 
+
+Then, the use in terminal is trivial:
+
+```
+jrlab@jrlab-T150s:~$ zg git bash
+   1  /home/jrlab/Desktop/Git/MyBashScripts
+jrlab@jrlab-T150s:~$ zx 1
+cd /home/jrlab/Desktop/Git/MyBashScripts
+jrlab@jrlab-T150s:~/Desktop/Git/MyBashScripts$ 
+```
