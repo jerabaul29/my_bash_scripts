@@ -1,3 +1,0 @@
-At installation, need to set HISTSIZE, HISTFILE, PATH_TO_SAVELAST
-Careful that HISTSIZE and HISTFILE must correspond with bashrc
-To use easily, make bashrc alias: alias hg='/home/jrlab/Desktop/Git/MyBashScripts/histg.sh'
