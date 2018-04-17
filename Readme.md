@@ -81,3 +81,19 @@ jrlab@jrlab-T150s:~$ zx 1
 cd /home/jrlab/Desktop/Git/MyBashScripts
 jrlab@jrlab-T150s:~/Desktop/Git/MyBashScripts$ 
 ```
+
+## vim-manual
+
+A simple one liner script to open manual pages with vim in read only mode.
+
+Example of use:
+
+```
+vn grep
+```
+
+To enable this one, I put the following alias in my .bashrc:
+
+```
+alias vn="/home/jrlab/Desktop/Git/MyBashScripts/vim_manual.sh"
+```
