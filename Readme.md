@@ -16,7 +16,7 @@ alias script_prepare_figures='/home/jrlab/Desktop/Git/MyBashScripts/script_prepa
 
 ## script_prepare_figures.sh
 
-A script to trim, convert to pdf, and reduce size of images. Useful to run for example on the /Figures folder of a LaTex project.
+A script to trim, convert to pdf, and reduce size of images. Useful to run for example on the /Figures folder of a LaTex project. 
 
 ## script_compile_latex.sh
 
