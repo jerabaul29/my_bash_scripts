@@ -45,21 +45,12 @@ jrlab@jrlab-T150s:~/Desktop/Git/Example_Debug_Macros_arduino/src$ hx 1
 success
 ```
 
-NOTE: in order for all commands to work (also those that should be executed in the corresponding shell and not a subshell, for example *cd*), the aliases could be something of the kind:
+The *hg* and *hx* functions can be made available by putting the following in the bashrc:
 
-```
-alias hg='. /home/jrlab/Desktop/Git/MyBashScripts/histg.sh'
-alias hx='. /home/jrlab/Desktop/Git/MyBashScripts/histx.sh'
-```
-
-But this creates more problems than it fixes; therefore, I keep the aliases as:
-
-```
+ ```
 alias hg='/home/jrlab/Desktop/Git/MyBashScripts/histg.sh'
-alias hx='/home/jrlab/Desktop/Git/MyBashScripts/histx.sh'
-```
-
-and I use other scripts (for example, the excellent *z*) for cd-ing.
+. /home/jrlab/Desktop/Git/MyBashScripts/histx.sh
+ ```
 
 ## zg.sh and zx.sh
 
