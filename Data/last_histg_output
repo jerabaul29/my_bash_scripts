@@ -1,7 +1,0 @@
-   1   2816  ls -lrt .
-   2   2817  ls -lRt .
-   3   3011  ls -lRt
-   4   7437  ls -lrth | grep dict
-   5   7561  ls -lrth
-   6   9743  ls -lrt
-   7  12672  ls -lrt 2/
