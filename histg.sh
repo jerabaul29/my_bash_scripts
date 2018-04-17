@@ -21,7 +21,6 @@ set -o history             # enable history
 PATH_TO_SAVELAST="/home/jrlab/Desktop/Git/MyBashScripts/Data/last_histg_output"
 
 # the first filtering: grep with the first patter, sort by command, tak away duplicates, sort by number
-# TODO: make sure that the second ordering is by last time of being called
 OUTPUT="$(history | grep -i "$1" | sort -k2 | tac | uniq -f 1 | sort -n)"
 
 # TODO: do all the grepping only once, and remove color from the one to write (using sed ?)
