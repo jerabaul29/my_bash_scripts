@@ -63,6 +63,11 @@ alias zg='/home/jrlab/Desktop/Git/MyBashScripts/zg.sh'
 . /home/jrlab/Desktop/Git/MyBashScripts/zx.sh
 ``` 
 
+In addition, you will need to set the right values for the following paths:
+
+- in *zg.sh*: PATH_Z_DATABASE, PATH_TO_SAVELAST
+- in *zx.sh*: PATH_TO_SAVELAST
+
 Then, the use in terminal is trivial:
 
 ```
