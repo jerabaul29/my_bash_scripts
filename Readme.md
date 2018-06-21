@@ -1,6 +1,6 @@
 # My bash scripts
 
-This folder contains a few bash scripts I use on my machines.
+This folder contains a few bash scripts I use on my machines. You can read a bit more about some of those scripts here: https://folk.uio.no/jeanra/Informatics/increasing_bash_productivity.html .
 
 To add a bash script to the terminal:
 
@@ -62,6 +62,11 @@ To use them easily, simply add to your bashrc:
 alias zg='/home/jrlab/Desktop/Git/MyBashScripts/zg.sh'
 . /home/jrlab/Desktop/Git/MyBashScripts/zx.sh
 ``` 
+
+In addition, you will need to set the right values for the following paths:
+
+- in *zg.sh*: PATH_Z_DATABASE, PATH_TO_SAVELAST
+- in *zx.sh*: PATH_TO_SAVELAST
 
 Then, the use in terminal is trivial:
 
