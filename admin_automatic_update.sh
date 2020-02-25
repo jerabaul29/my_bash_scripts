@@ -46,7 +46,7 @@ function wait_online
 	sleep 1200
 	echo "now start update upgrade..."
 	apt-get update
-	apt-get upgrade
+	apt-get upgrade -y
 	apt-get autoremove
 } >> XX_SET_PATH 2>&1
 
