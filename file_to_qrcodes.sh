@@ -88,6 +88,27 @@ CONTENT_QR_CODE_BYTES=500
 
 # TODO: some decoding function
 
+# TODO: what this package is doing / not doing
+# help in splitting / putting together
+# no encryption or malicious user
+
+# TODO: each packet; add a signature ID (rdm, common for all packets in a series) and number within the packets
+
+# TODO: function to organize the scanned QR codes
+# for printing
+
+# TODO function for ordering the collected QR codes
+
+# TODO: app for scanning on the phone or from
+# paper
+
+# TODO: function for putting on paper
+# first page: 'title, metadata, etc'
+# following: data
+
+# TODO: first page metadata: include how things
+# organized on paper sheets when printing (so
+# that more easy to decrypt).
 
 ##############################################
 # ready to do the heavy work                 #
@@ -121,6 +142,9 @@ for CRRT_FILE in ${TMP_DIR}/data-??; do
     # echo ${CRRT_DIGEST} | xxd
     echo -n "${CRRT_DIGEST}" >> ${CRRT_FILE}
 done
+
+# append for each segment its metadata:
+# ID + current number
 
 # generate the data segments qr codes
 
