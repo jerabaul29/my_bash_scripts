@@ -105,6 +105,8 @@ CONTENT_QR_CODE_BYTES=500
 # TODO: function for putting on paper
 # first page: 'title, metadata, etc'
 # following: data
+# use A4 format
+# typically 1mm minimum per mini block
 
 # TODO: first page metadata: include how things
 # organized on paper sheets when printing (so
