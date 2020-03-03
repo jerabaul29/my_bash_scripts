@@ -25,6 +25,12 @@
 # output is 1 folder containing the "segment_0" (metadata) and
 # the "segment_XX", containing the data.
 
+# TODO: check that all needed packages are installed
+# zbarimg --version
+# qrencode
+# gzip
+# 
+
 echo "start qr-code archiving..."
 
 ##############################################
@@ -76,7 +82,10 @@ echo "using a SIZE_DIGEST of ${SIZE_DIGEST}"
 # see for example: https://web.archive.org/web/20160326120122/http://blog.qr4.nl/page/QR-Code-Data-Capacity.aspx
 # be a bit conservative about qr code size
 # to be nice to possible bad printers
-CONTENT_QR_CODE_BYTES=500
+CONTENT_QR_CODE_BYTES=$((403-20-2-8))
+
+echo "data content per qr code (bytes)"
+echo "${CONTENT_QR_CODE_BYTES}"
 
 # TODO: some print of the content per qr code
 
@@ -92,7 +101,11 @@ CONTENT_QR_CODE_BYTES=500
 # help in splitting / putting together
 # no encryption or malicious user
 
-# TODO: each packet; add a signature ID (rdm, common for all packets in a series) and number within the packets
+# generate a random signature ID for the package
+SIZE_ID=8
+ID=$(dd if=/dev/urandom bs=${SIZE_ID} count=1)
+echo "random ID:"
+echo -n ${ID} | xxd
 
 # TODO: function to organize the scanned QR codes
 # for printing
@@ -124,6 +137,9 @@ echo "compressing file..."
 touch ${TMP_DIR}/compressed
 gzip -vc9 ${FILE_NAME} > ${TMP_DIR}/compressed
 
+echo "information about compressed binary file:"
+ls -lrth ${TMP_DIR}/compressed
+
 # split the compressed file
 # into segments to be used for qr-codes.
 echo "split the compressed file into segments"
@@ -133,22 +149,60 @@ NBR_DATA_SEGMENTS=$(find ${TMP_DIR} -name 'data-*' | wc -l)
 echo "split into ${NBR_DATA_SEGMENTS} segments"
 
 # append for each data segment its digest
+# the ID, and current segment number
+COUNTER=0
+
 for CRRT_FILE in ${TMP_DIR}/data-??; do
-    echo "append digest to ${CRRT_FILE}"
-    CRRT_DIGEST=$(digest_function ${CRRT_FILE})
-    # echo "crrt file"
-    # xxd ${CRRT_FILE}
-    # echo "crrt digest"
-    # echo ${CRRT_DIGEST} | xxd
-    echo -n "${CRRT_DIGEST}" >> ${CRRT_FILE}
+    echo "append digest ID to ${CRRT_FILE}"
+
+    digest_function ${CRRT_FILE} >> ${CRRT_FILE}
+
+    echo -n "${ID}" >> ${CRRT_FILE}
+
+    # NOTE: this limits the max number of segments to 2^16-1 as
+    # we are using 2 bytes for encoding
+    printf "0: %.4x" $COUNTER | xxd -r -g0 >> ${CRRT_FILE}
+    COUNTER=$((COUNTER+1))
 done
 
-# append for each segment its metadata:
-# ID + current number
-
 # generate the data segments qr codes
+for CRRT_FILE in ${TMP_DIR}/data-??; do
+    echo "generate the qr-code for ${CRRT_FILE}"
+
+    # use highest error correction level
+    # TODO: adjust parameters to get nice sharp qr codes to print on A4
+    cat ${CRRT_FILE} | qrencode -l H -8 -o ${CRRT_FILE}.png
+done
+
 
 # generate the qr code with the metadata
+echo "create meteadata"
+
+CRRT_FILE=${TMP_DIR}/metadata
+echo -n "QRD:" >> ${CRRT_FILE}
+echo -n "${FILE_NAME}" >> ${CRRT_FILE}
+
+echo -n ";NSEG:" >> ${CRRT_FILE}
+echo -n "${NBR_DATA_SEGMENTS}" >> ${CRRT_FILE}
+
+echo -n ";DATE:" >> ${CRRT_FILE}
+date '+%Y-%m-%d,%H:%M:%S' >> ${CRRT_FILE}
+
+echo -n ";ID:" >> ${CRRT_FILE}
+echo -n "${ID}" >> ${CRRT_FILE}
+
+echo -n ";vGZIP:" >> ${CRRT_FILE}
+gzip --version | head -1 | awk '{print $2}' >> ${CRRT_FILE}
+
+echo -n ";vQRENCODE" >> ${CRRT_FILE}
+# TODO: this one is broken, fix
+
+
+echo "generate metadata qr code"
+
+
+# check that able to decode all and agree with the input data
+
 
 # move all the qr codes to a new folder
 # at the current location
