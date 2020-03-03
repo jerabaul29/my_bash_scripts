@@ -126,6 +126,10 @@ echo -n ${ID} | xxd
 # organized on paper sheets when printing (so
 # that more easy to decrypt).
 
+# TODO: organize in functions, in particular
+# the qr encoding / decoding
+# and make the effective dots a bit bigger?
+
 ##############################################
 # ready to do the heavy work                 #
 ##############################################
