@@ -212,6 +212,19 @@ echo "generate metadata qr code"
 cat ${CRRT_FILE} | qrencode -l H -8 -o ${CRRT_FILE}.png
 
 # check that able to decode all and agree with the input data
+# TODO: for all in png decrypt and compare with the non png
+
+# TODO: put on an A4 page
+
+# TODO: the encoding / decoding with QR codes is broken for now because
+# probably of what zbarimg does when the qr code contains some binary
+# data, see:
+# https://stackoverflow.com/questions/60506222/encode-decode-binary-data-in-a-qr-code-using-qrencode-and-zbarimg-in-bash
+# trying to get a version of zbarimg that does not break the binary
+# encoding thing. Another option as suggested on SO is to use
+# a base64 encoding, but I am afraid that it will reduce the
+# capacity by a factor of 2.
+# a fix to zbarimg is under its way and should solve the problem.
 
 
 # move all the qr codes to a new folder
