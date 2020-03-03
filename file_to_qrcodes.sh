@@ -82,7 +82,8 @@ echo "using a SIZE_DIGEST of ${SIZE_DIGEST}"
 # see for example: https://web.archive.org/web/20160326120122/http://blog.qr4.nl/page/QR-Code-Data-Capacity.aspx
 # be a bit conservative about qr code size
 # to be nice to possible bad printers
-CONTENT_QR_CODE_BYTES=$((403-20-2-8))
+MAX_QR_SIZE=403
+CONTENT_QR_CODE_BYTES=$((${MAX_QR_SIZE}-20-2-8))
 
 echo "data content per qr code (bytes)"
 echo "${CONTENT_QR_CODE_BYTES}"
@@ -103,7 +104,7 @@ echo "${CONTENT_QR_CODE_BYTES}"
 
 # generate a random signature ID for the package
 SIZE_ID=8
-ID=$(dd if=/dev/urandom bs=${SIZE_ID} count=1)
+ID=$(dd if=/dev/urandom bs=${SIZE_ID} count=1 status=none)
 echo "random ID:"
 echo -n ${ID} | xxd
 
@@ -176,13 +177,12 @@ for CRRT_FILE in ${TMP_DIR}/data-??; do
     cat ${CRRT_FILE} | qrencode -l H -8 -o ${CRRT_FILE}.png
 done
 
-
 # generate the qr code with the metadata
 echo "create meteadata"
 
 CRRT_FILE=${TMP_DIR}/metadata
 echo -n "QRD:" >> ${CRRT_FILE}
-echo "${FILE_NAME}" >> ${CRRT_FILE}
+echo "$(basename ${FILE_NAME})" >> ${CRRT_FILE}
 
 echo -n "NSEG:" >> ${CRRT_FILE}
 echo "${NBR_DATA_SEGMENTS}" >> ${CRRT_FILE}
@@ -202,8 +202,14 @@ echo "$(qrencode --version 2>&1 | head -1 |  awk '{print $3}')" >> ${CRRT_FILE}
 echo -n "SYS:" >> ${CRRT_FILE}
 echo "$(lsb_release -d | cut -f 2- -d$'\t' | sed 's/ //g')" >> ${CRRT_FILE}
 
-echo "generate metadata qr code"
+# check that metadata is not too heavy
+# use the same size as the max qrcode choosen previously
+if [ "$(stat --printf="%s" ${CRRT_FILE})" -gt ${MAX_QR_SIZE} ]; then
+    echo "*** WARNING *** looks like the metadata is dangerously big!"
+fi
 
+echo "generate metadata qr code"
+cat ${CRRT_FILE} | qrencode -l H -8 -o ${CRRT_FILE}.png
 
 # check that able to decode all and agree with the input data
 
