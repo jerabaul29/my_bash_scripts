@@ -182,23 +182,25 @@ echo "create meteadata"
 
 CRRT_FILE=${TMP_DIR}/metadata
 echo -n "QRD:" >> ${CRRT_FILE}
-echo -n "${FILE_NAME}" >> ${CRRT_FILE}
+echo "${FILE_NAME}" >> ${CRRT_FILE}
 
-echo -n ";NSEG:" >> ${CRRT_FILE}
-echo -n "${NBR_DATA_SEGMENTS}" >> ${CRRT_FILE}
+echo -n "NSEG:" >> ${CRRT_FILE}
+echo "${NBR_DATA_SEGMENTS}" >> ${CRRT_FILE}
 
-echo -n ";DATE:" >> ${CRRT_FILE}
-date '+%Y-%m-%d,%H:%M:%S' >> ${CRRT_FILE}
+echo -n "DATE:" >> ${CRRT_FILE}
+echo "$(date '+%Y-%m-%d,%H:%M:%S')" >> ${CRRT_FILE}
 
-echo -n ";ID:" >> ${CRRT_FILE}
-echo -n "${ID}" >> ${CRRT_FILE}
+echo -n "ID:" >> ${CRRT_FILE}
+echo "${ID}" >> ${CRRT_FILE}
 
-echo -n ";vGZIP:" >> ${CRRT_FILE}
-gzip --version | head -1 | awk '{print $2}' >> ${CRRT_FILE}
+echo -n "vGZIP:" >> ${CRRT_FILE}
+echo "$(gzip --version | head -1 | awk '{print $2}')" >> ${CRRT_FILE}
 
-echo -n ";vQRENCODE" >> ${CRRT_FILE}
-# TODO: this one is broken, fix
+echo -n "vQRENCODE:" >> ${CRRT_FILE}
+echo "$(qrencode --version 2>&1 | head -1 |  awk '{print $3}')" >> ${CRRT_FILE}
 
+echo -n "SYS:" >> ${CRRT_FILE}
+echo "$(lsb_release -d | cut -f 2- -d$'\t' | sed 's/ //g')" >> ${CRRT_FILE}
 
 echo "generate metadata qr code"
 
