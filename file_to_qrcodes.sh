@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO: move into an own repo, and make it into 'qrdump'
+# TODO: use 1 script to do all, both dump and extract?
+
 # NOTE: used some inspiration for making
 # more robust and parsing args from the second
 # answer in:
@@ -36,6 +39,8 @@ fi
 # acceptable options
 OPTIONS=hvdg
 LONGOPTS=help,verbose,base64,debug,digest:,
+
+# TODO: add the --debug - d and the --extract -e options
 
 # default values of the options
 HELP="False"
