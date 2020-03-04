@@ -221,6 +221,7 @@ digest_function(){
     # rm crrt_digest_function_testfile.bin
     # echo "all should agree; done with my tests"
 
+    # TODO: factor out as a function
     # find out what kind of data input is used ---------------------
     # if giving the filepath as argument
     if [[ "$#" = "1" ]]
