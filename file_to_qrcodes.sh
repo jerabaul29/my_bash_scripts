@@ -34,14 +34,15 @@ if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
 fi
 
 # acceptable options
-OPTIONS=hvd
-LONGOPTS=help,verbose,base64,debug
+OPTIONS=hvdg
+LONGOPTS=help,verbose,base64,debug,digest:,
 
 # default values of the options
 HELP="False"
 VERBOSE="False"
 ENCODING="binary"
 DEBUG="False"
+DIGEST="sha1sum"
 
 # -regarding ! and PIPESTATUS see above
 # -temporarily store output to be able to check for errors
@@ -76,6 +77,10 @@ while true; do
             DEBUG="True"
             shift
             ;;
+        -g|--digest)
+            DIGEST="$2"
+            shift 2
+            ;;
         --)
             shift
             break
@@ -93,6 +98,21 @@ if [[ "${HELP}" = "True" ]]; then
   echo "use: qrarchive file_name"
   echo "ex : qrarchive my_file.txt"
   exit 0
+fi
+
+show_variable(){
+    local CRRT_VAR=$1
+    echo "${CRRT_VAR}: ${!CRRT_VAR}"
+}
+
+if [[ "${DEBUG}" = "True" ]]
+then
+    echo "using debug mode... dump of the options"
+    show_variable "HELP"
+    show_variable "VERBOSE"
+    show_variable "ENCODING"
+    show_variable "DEBUG"
+    show_variable "DIGEST"
 fi
 
 # handle non-option arguments
@@ -169,12 +189,19 @@ fi
 # only as a strong proof that the data
 # was well decrypted
 digest_function(){
-    sha1sum $1 | awk '{print $1;}' | xxd -r -ps
-    # it is not necessary to remove the EOR 
-    # sha1sum $1 | awk '{print $1;}' | head -c-1 | xxd -r -ps
+    if [[ "${DIGEST}" = "sha1sum" ]];
+    then
+        sha1sum $1 | awk '{print $1;}' | xxd -r -ps
+        # it is not necessary to remove the EOR 
+        # sha1sum $1 | awk '{print $1;}' | head -c-1 | xxd -r -ps
+    else
+        echo "unknown digest function parameter: ${DIGEST}"
+        exit 6
+    fi
 }
 
-SIZE_DIGEST=$(digest_function "< echo bla | wc -c)
+# TODO: fixme, need not execute from the local dir, should be able to take std input
+SIZE_DIGEST=$(digest_function $0 | wc -c)
 
 echo_verbose "using a SIZE_DIGEST of ${SIZE_DIGEST}"
 
