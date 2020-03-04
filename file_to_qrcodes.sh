@@ -1,5 +1,103 @@
 #!/bin/bash
 
+# NOTE: used some inspiration for making
+# more robust and parsing args from the second
+# answer in:
+# https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
+
+# TODO: improve style
+# https://bash3boilerplate.sh/
+
+##############################################
+# sounder programming environment            #
+##############################################
+
+# exit if a command fails
+set -o errexit
+# make sure to show the error code of the first failing command
+set -o pipefail
+# do not overwrite files too easily
+set -o noclobber
+# exit if try to use undefined variable
+set -o nounset
+
+##############################################
+# parse incoming args                        #
+##############################################
+
+# -allow a command to fail with !’s side effect on errexit
+# -use return value from ${PIPESTATUS[0]}, because ! hosed $?
+! getopt --test > /dev/null 
+if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
+    echo 'I’m sorry, `getopt --test` failed in this environment.'
+    exit 1
+fi
+
+# acceptable options
+OPTIONS=hv
+LONGOPTS=help,verbose,base64
+
+# default values of the options
+HELP="False"
+VERBOSE="False"
+ENCODING="binary"
+
+# -regarding ! and PIPESTATUS see above
+# -temporarily store output to be able to check for errors
+# -activate quoting/enhanced mode (e.g. by writing out “--options”)
+# -pass arguments only via   -- "$@"   to separate them correctly
+! PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
+if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
+    # e.g. return value is 1
+    #  then getopt has complained about wrong arguments to stdout
+    exit 2
+fi
+
+# read getopt’s output this way to handle the quoting right:
+eval set -- "$PARSED"
+
+# now enjoy the options in order and nicely split until we see --
+while true; do
+    case "$1" in
+        -h|--help)
+            HELP="True"
+            shift
+            ;;
+        -v|--verbose)
+            VERBOSE="True"
+            shift
+            ;;
+        --base64)
+            ENCODING="base64"
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "Invalid args; type -h or --help for help"
+            exit 3
+            ;;
+    esac
+done
+
+if [[ "${HELP}" = "True" ]]; then
+  echo "A bash script to generate a series of qr-codes"
+  echo "to archive a file."
+  echo "use: qrarchive file_name"
+  echo "ex : qrarchive my_file.txt"
+  exit 0
+fi
+
+# handle non-option arguments
+if [[ $# -ne 1 ]]; then
+    echo "$0: A single input file is required."
+    exit 4
+fi
+
+# TODO: add description / manpage (see what is below)
+
 # generate a series of qr codes that fully encode a file
 # workflow:
 #
@@ -36,19 +134,6 @@ echo "start qr-code archiving..."
 ##############################################
 # a bit of input sanitation                  #
 ##############################################
-
-if [ $# -eq 0 ]; then
-    echo "No arguments provided; -h for help"
-    exit 1
-fi
-
-if [ "$1" == "-h" ]; then
-  echo "A bash script to generate a series of qr-codes"
-  echo "to archive a file."
-  echo "use: qrarchive file_name"
-  echo "ex : qrarchive my_file.txt"
-  exit 0
-fi
 
 FILE_NAME=$1
 echo "qr-code archiving of ${FILE_NAME}"
@@ -129,6 +214,17 @@ echo -n ${ID} | xxd
 # TODO: organize in functions, in particular
 # the qr encoding / decoding
 # and make the effective dots a bit bigger?
+
+# TODO: apply formatting on how the QR codes
+# put on the page. 1st page just metadata QR code
+# later pages line top with page number.
+
+# TODO: option base64 and log it in metadata
+
+# TODO: verbosity control
+
+# TODO: debug mode where shows the tmp stuff
+# and do not remove it
 
 ##############################################
 # ready to do the heavy work                 #
