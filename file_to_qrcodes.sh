@@ -221,6 +221,8 @@ digest_function(){
     # rm crrt_digest_function_testfile.bin
     # echo "all should agree; done with my tests"
 
+    # find out what kind of data input is used ---------------------
+    # if giving the filepath as argument
     if [[ "$#" = "1" ]]
     then
         # this needs to be a file that exists
@@ -229,18 +231,21 @@ digest_function(){
             echo "File not found! Aborting..."
             exit 6
         else
+            # success, file is here
             local ARGTYPE="Filename"
             local PARAM="$1"
         fi
 
+    # if giving data directly from std input
     else
         local ARGTYPE="StdInput"
         local PARAM=$(cat)
     fi
 
+    # actually do the work ----------------------------------------
+    # if using filepath
     if [[ "${ARGTYPE}" = "Filename" ]]
     then
-
         if [[ "${DIGEST}" = "sha1sum" ]]
         then
             local DIGEST=$(sha1sum ${PARAM})
@@ -249,6 +254,7 @@ digest_function(){
             exit 7
         fi
 
+    # if using std input
     else
         if [[ "${DIGEST}" = "sha1sum" ]]
         then
