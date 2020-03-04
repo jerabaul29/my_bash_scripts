@@ -174,7 +174,7 @@ digest_function(){
     # sha1sum $1 | awk '{print $1;}' | head -c-1 | xxd -r -ps
 }
 
-SIZE_DIGEST=$(digest_function $0 | wc -c)
+SIZE_DIGEST=$(digest_function "< echo bla | wc -c)
 
 echo_verbose "using a SIZE_DIGEST of ${SIZE_DIGEST}"
 
