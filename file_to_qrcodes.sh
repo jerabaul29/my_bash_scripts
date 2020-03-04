@@ -34,13 +34,14 @@ if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
 fi
 
 # acceptable options
-OPTIONS=hv
-LONGOPTS=help,verbose,base64
+OPTIONS=hvd
+LONGOPTS=help,verbose,base64,debug
 
 # default values of the options
 HELP="False"
 VERBOSE="False"
 ENCODING="binary"
+DEBUG="False"
 
 # -regarding ! and PIPESTATUS see above
 # -temporarily store output to be able to check for errors
@@ -71,6 +72,10 @@ while true; do
             ENCODING="base64"
             shift
             ;;
+        -d|--debug)
+            DEBUG="True"
+            shift
+            ;;
         --)
             shift
             break
@@ -95,6 +100,17 @@ if [[ $# -ne 1 ]]; then
     echo "$0: A single input file is required."
     exit 4
 fi
+
+##############################################
+# the functions that depend on options       #
+##############################################
+
+echo_verbose(){
+    if [[ "${VERBOSE}" = "True" ]]; then
+        echo "$1"
+    fi
+}
+
 
 # TODO: add description / manpage (see what is below)
 
@@ -129,24 +145,25 @@ fi
 # gzip
 # 
 
-echo "start qr-code archiving..."
+echo_verbose "start qr-code archiving..."
 
 ##############################################
 # a bit of input sanitation                  #
 ##############################################
 
 FILE_NAME=$1
-echo "qr-code archiving of ${FILE_NAME}"
+echo_verbose "qr-code archiving of ${FILE_NAME}"
 
 if [ ! -f ${FILE_NAME} ]; then
     echo "File not found! Aborting..."
-    exit 1
+    exit 5
 fi
 
 ##############################################
-# some general parameters                    #
+# parameters and function                    #
 ##############################################
 
+# TODO: give several possible including none
 # the digest function to use
 # this is not for cryptographic reasons,
 # only as a strong proof that the data
@@ -157,9 +174,9 @@ digest_function(){
     # sha1sum $1 | awk '{print $1;}' | head -c-1 | xxd -r -ps
 }
 
-SIZE_DIGEST=$(echo "anything" | digest_function | wc -c)
+SIZE_DIGEST=$(digest_function $0 | wc -c)
 
-echo "using a SIZE_DIGEST of ${SIZE_DIGEST}"
+echo_verbose "using a SIZE_DIGEST of ${SIZE_DIGEST}"
 
 # TODO: decide this so that use a 'good' size of individual qr codes
 # the max information content of a qr-code depending
@@ -167,11 +184,12 @@ echo "using a SIZE_DIGEST of ${SIZE_DIGEST}"
 # see for example: https://web.archive.org/web/20160326120122/http://blog.qr4.nl/page/QR-Code-Data-Capacity.aspx
 # be a bit conservative about qr code size
 # to be nice to possible bad printers
+# TODO: automatically get the digest function size
 MAX_QR_SIZE=403
 CONTENT_QR_CODE_BYTES=$((${MAX_QR_SIZE}-20-2-8))
 
-echo "data content per qr code (bytes)"
-echo "${CONTENT_QR_CODE_BYTES}"
+echo_verbose "data content per qr code (bytes)"
+echo_verbose "${CONTENT_QR_CODE_BYTES}"
 
 # TODO: some print of the content per qr code
 
@@ -190,8 +208,8 @@ echo "${CONTENT_QR_CODE_BYTES}"
 # generate a random signature ID for the package
 SIZE_ID=8
 ID=$(dd if=/dev/urandom bs=${SIZE_ID} count=1 status=none)
-echo "random ID:"
-echo -n ${ID} | xxd
+echo_verbose "random ID:"
+echo_verbose -n ${ID} | xxd
 
 # TODO: function to organize the scanned QR codes
 # for printing
@@ -232,31 +250,30 @@ echo -n ${ID} | xxd
 
 # create temporary folder
 TMP_DIR=$(mktemp -d)
-echo "created working tmp: ${TMP_DIR}"
+echo_verbose "created working tmp: ${TMP_DIR}"
 
 # compress the destination file
 # display information, use maximum compression
-echo "compressing file..."
-touch ${TMP_DIR}/compressed
+echo_verbose "compressing file..."
 gzip -vc9 ${FILE_NAME} > ${TMP_DIR}/compressed
 
-echo "information about compressed binary file:"
+echo_verbose "information about compressed binary file:"
 ls -lrth ${TMP_DIR}/compressed
 
 # split the compressed file
 # into segments to be used for qr-codes.
-echo "split the compressed file into segments"
+echo_verbose "split the compressed file into segments"
 split -d -a 2 -b ${CONTENT_QR_CODE_BYTES} ${TMP_DIR}/compressed ${TMP_DIR}/data-
 
 NBR_DATA_SEGMENTS=$(find ${TMP_DIR} -name 'data-*' | wc -l)
-echo "split into ${NBR_DATA_SEGMENTS} segments"
+echo_verbose "split into ${NBR_DATA_SEGMENTS} segments"
 
 # append for each data segment its digest
 # the ID, and current segment number
 COUNTER=0
 
 for CRRT_FILE in ${TMP_DIR}/data-??; do
-    echo "append digest ID to ${CRRT_FILE}"
+    echo_verbose "append digest ID to ${CRRT_FILE}"
 
     digest_function ${CRRT_FILE} >> ${CRRT_FILE}
 
@@ -270,7 +287,7 @@ done
 
 # generate the data segments qr codes
 for CRRT_FILE in ${TMP_DIR}/data-??; do
-    echo "generate the qr-code for ${CRRT_FILE}"
+    echo_verbose "generate the qr-code for ${CRRT_FILE}"
 
     # use highest error correction level
     # TODO: adjust parameters to get nice sharp qr codes to print on A4
@@ -278,7 +295,7 @@ for CRRT_FILE in ${TMP_DIR}/data-??; do
 done
 
 # generate the qr code with the metadata
-echo "create meteadata"
+echo_verbose "create meteadata"
 
 CRRT_FILE=${TMP_DIR}/metadata
 echo -n "QRD:" >> ${CRRT_FILE}
@@ -305,10 +322,10 @@ echo "$(lsb_release -d | cut -f 2- -d$'\t' | sed 's/ //g')" >> ${CRRT_FILE}
 # check that metadata is not too heavy
 # use the same size as the max qrcode choosen previously
 if [ "$(stat --printf="%s" ${CRRT_FILE})" -gt ${MAX_QR_SIZE} ]; then
-    echo "*** WARNING *** looks like the metadata is dangerously big!"
+    echo_verbose "*** WARNING *** looks like the metadata is dangerously big!"
 fi
 
-echo "generate metadata qr code"
+echo_verbose "generate metadata qr code"
 cat ${CRRT_FILE} | qrencode -l H -8 -o ${CRRT_FILE}.png
 
 # check that able to decode all and agree with the input data
@@ -331,10 +348,16 @@ cat ${CRRT_FILE} | qrencode -l H -8 -o ${CRRT_FILE}.png
 # at the current location
 
 # delete temporary folder
-#rm -r $TMP_DIR
-echo "removed working tmp: ${TMP_DIR}"
+if [[ "${DEBUG}" = "True" ]];
+then
+    echo "in debug mode, the tmp dir is not removed to allow inspection"
+    echo "tmp is found in: ${TMP_DIR}"
+else
+    echo_verbose "removed working tmp: ${TMP_DIR}"
+    rm -r $TMP_DIR
+fi
 
-echo "done"
+echo_verbose "done"
 
 
 
