@@ -100,20 +100,19 @@ if [[ "${HELP}" = "True" ]]; then
   exit 0
 fi
 
-show_variable(){
-    local CRRT_VAR=$1
-    echo "${CRRT_VAR}: ${!CRRT_VAR}"
+show_debug_variable(){
+    if [[ "${DEBUG}" = "True" ]]
+    then
+        local CRRT_VAR=$1
+        echo "${CRRT_VAR}: ${!CRRT_VAR}"
+    fi
 }
 
-if [[ "${DEBUG}" = "True" ]]
-then
-    echo "using debug mode... dump of the options"
-    show_variable "HELP"
-    show_variable "VERBOSE"
-    show_variable "ENCODING"
-    show_variable "DEBUG"
-    show_variable "DIGEST"
-fi
+show_debug_variable "HELP"
+show_debug_variable "VERBOSE"
+show_debug_variable "ENCODING"
+show_debug_variable "DEBUG"
+show_debug_variable "DIGEST"
 
 # handle non-option arguments
 if [[ $# -ne 1 ]]; then
@@ -200,10 +199,10 @@ digest_function(){
     fi
 }
 
-# TODO: fixme, need not execute from the local dir, should be able to take std input
+# TODO: FIXME, need not execute from the local dir, should be able to take std input
 SIZE_DIGEST=$(digest_function $0 | wc -c)
 
-echo_verbose "using a SIZE_DIGEST of ${SIZE_DIGEST}"
+show_debug_variable "SIZE_DIGEST"
 
 # TODO: decide this so that use a 'good' size of individual qr codes
 # the max information content of a qr-code depending
@@ -212,7 +211,9 @@ echo_verbose "using a SIZE_DIGEST of ${SIZE_DIGEST}"
 # be a bit conservative about qr code size
 # to be nice to possible bad printers
 # TODO: automatically get the digest function size
+#TODO: make this size an arg
 MAX_QR_SIZE=403
+#TODO: make this full logics
 CONTENT_QR_CODE_BYTES=$((${MAX_QR_SIZE}-20-2-8))
 
 echo_verbose "data content per qr code (bytes)"
