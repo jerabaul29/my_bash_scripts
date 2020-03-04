@@ -40,7 +40,8 @@ fi
 OPTIONS=hvdg
 LONGOPTS=help,verbose,base64,debug,digest:,
 
-# TODO: add the --debug - d and the --extract -e options
+# TODO: add the --dump - d and the --extract -e options
+# TODO: to allow the previous, change --debug -d to -b --debug
 
 # default values of the options
 HELP="False"
@@ -105,6 +106,37 @@ if [[ "${HELP}" = "True" ]]; then
   exit 0
 fi
 
+# handle non-option arguments
+if [[ $# -ne 1 ]]; then
+    echo "$0: A single input file is required."
+    exit 4
+fi
+
+# TODO: harmonize exit codes
+
+##############################################
+# input sanitation                           #
+##############################################
+
+FILE_NAME=$1
+echo_verbose "qr-code archiving of ${FILE_NAME}"
+
+if [ ! -f ${FILE_NAME} ]; then
+    echo "File not found! Aborting..."
+    exit 5
+fi
+
+
+##############################################
+# critical verbose and debug functions       #
+##############################################
+
+echo_verbose(){
+    if [[ "${VERBOSE}" = "True" ]]; then
+        echo "$1"
+    fi
+}
+
 show_debug_variable(){
     if [[ "${DEBUG}" = "True" ]]
     then
@@ -113,27 +145,16 @@ show_debug_variable(){
     fi
 }
 
+
+##############################################
+# in case of debug, show the options         #
+##############################################
+
 show_debug_variable "HELP"
 show_debug_variable "VERBOSE"
 show_debug_variable "ENCODING"
 show_debug_variable "DEBUG"
 show_debug_variable "DIGEST"
-
-# handle non-option arguments
-if [[ $# -ne 1 ]]; then
-    echo "$0: A single input file is required."
-    exit 4
-fi
-
-##############################################
-# the functions that depend on options       #
-##############################################
-
-echo_verbose(){
-    if [[ "${VERBOSE}" = "True" ]]; then
-        echo "$1"
-    fi
-}
 
 
 # TODO: add description / manpage (see what is below)
@@ -172,19 +193,8 @@ echo_verbose(){
 echo_verbose "start qr-code archiving..."
 
 ##############################################
-# a bit of input sanitation                  #
-##############################################
-
-FILE_NAME=$1
-echo_verbose "qr-code archiving of ${FILE_NAME}"
-
-if [ ! -f ${FILE_NAME} ]; then
-    echo "File not found! Aborting..."
-    exit 5
-fi
-
-##############################################
-# parameters and function                    #
+# parameters processing and                  #
+# parameters dependent functions             #
 ##############################################
 
 # TODO: give several possible including none
@@ -328,6 +338,8 @@ echo_verbose -n ${ID} | xxd
 # ready to do the heavy work                 #
 ##############################################
 
+# TODO: have a 'main functions section'
+
 # create temporary folder
 TMP_DIR=$(mktemp -d)
 echo_verbose "created working tmp: ${TMP_DIR}"
@@ -441,6 +453,8 @@ echo_verbose "done"
 
 
 
+# TODO: have a 'main' section where most of the actual
+# work is done
 
 
 
