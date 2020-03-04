@@ -188,20 +188,66 @@ fi
 # only as a strong proof that the data
 # was well decrypted
 digest_function(){
-    if [[ "${DIGEST}" = "sha1sum" ]];
+    # digest and return the result converted in raw bytes
+    # argument is either filename or read from std input
+    # similar to the sha*sum functions
+
+    # # if need to test this function
+    # 
+    # echo "baseline sha1sum"
+    # echo -n "bla" | sha1sum
+    # 
+    # echo "try my function in std input mode"
+    # echo -n "bla" | digest_function | xxd
+    # 
+    # echo "try my function in file name mode"
+    # echo -n "bla" > crrt_digest_function_testfile.bin
+    # digest_function crrt_digest_function_testfile.bin | xxd
+    # rm crrt_digest_function_testfile.bin
+    # echo "all should agree; done with my tests"
+
+    if [[ "$#" = "1" ]]
     then
-        sha1sum $1 | awk '{print $1;}' | xxd -r -ps
-        # it is not necessary to remove the EOR 
-        # sha1sum $1 | awk '{print $1;}' | head -c-1 | xxd -r -ps
+        # this needs to be a file that exists
+        if [ ! -f $1 ]
+        then
+            echo "File not found! Aborting..."
+            exit 6
+        else
+            local ARGTYPE="Filename"
+            local PARAM="$1"
+        fi
+
     else
-        echo "unknown digest function parameter: ${DIGEST}"
-        exit 6
+        local ARGTYPE="StdInput"
+        local PARAM=$(cat)
     fi
+
+    if [[ "${ARGTYPE}" = "Filename" ]]
+    then
+
+        if [[ "${DIGEST}" = "sha1sum" ]]
+        then
+            local DIGEST=$(sha1sum ${PARAM})
+        else
+            echo "unknown DIGEST ${DIGEST}"
+            exit 7
+        fi
+
+    else
+        if [[ "${DIGEST}" = "sha1sum" ]]
+        then
+            local DIGEST=$(echo -n ${PARAM} | sha1sum)
+        else
+            echo "unknown DIGEST ${DIGEST}"
+            exit 7
+        fi
+    fi
+
+    echo -n "${DIGEST}" | awk '{print $1;}' | xxd -r -ps
 }
 
-# TODO: FIXME, need not execute from the local dir, should be able to take std input
-SIZE_DIGEST=$(digest_function $0 | wc -c)
-
+SIZE_DIGEST=$(echo -n "anything" | digest_function | wc -c)
 show_debug_variable "SIZE_DIGEST"
 
 # TODO: decide this so that use a 'good' size of individual qr codes
@@ -211,13 +257,14 @@ show_debug_variable "SIZE_DIGEST"
 # be a bit conservative about qr code size
 # to be nice to possible bad printers
 # TODO: automatically get the digest function size
-#TODO: make this size an arg
+# TODO: make this size an arg
 MAX_QR_SIZE=403
-#TODO: make this full logics
-CONTENT_QR_CODE_BYTES=$((${MAX_QR_SIZE}-20-2-8))
+show_debug_variable "MAX_QR_SIZE"
 
-echo_verbose "data content per qr code (bytes)"
-echo_verbose "${CONTENT_QR_CODE_BYTES}"
+# TODO: make this full logics
+# TODO: both the general ID (8 bytes) and the rank (2 bytes, TODO: make adaptable) should be made into logics
+CONTENT_QR_CODE_BYTES=$((${MAX_QR_SIZE}-${SIZE_DIGEST}-2-8))
+show_debug_variable "CONTENT_QR_CODE_BYTES"
 
 # TODO: some print of the content per qr code
 
