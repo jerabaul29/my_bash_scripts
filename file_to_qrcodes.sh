@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# TODO: make it work in base64 encoding: dumping + extraction of metadata + 1 qr code
+# then metadata + several QR codes
+
+# TODO: automatic layout on A4 page, automatic extraction of layout on A4 page,
+# add some lines of text
+
+# TODO: automatic tests for development
+
 # TODO: move into an own repo, and make it into 'qrdump'
 # TODO: use 1 script to do all, both dump and extract?
 
@@ -46,7 +54,7 @@ LONGOPTS=help,verbose,base64,debug,digest:,
 # default values of the options
 HELP="False"
 VERBOSE="False"
-ENCODING="binary"
+ENCODING="binary"  # TODO: add to options; use base64 so long
 DEBUG="False"
 DIGEST="sha1sum"
 
