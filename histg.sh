@@ -24,8 +24,7 @@ PATH_TO_SAVELAST="/home/jrlab/Desktop/Git/MyBashScripts/Data/last_histg_output"
 OUTPUT="$(history | grep -i "$1" | sort -k2 | tac | uniq -f 1 | sort -n)"
 
 # remove all commands that are hg and hx
-OUTPUT="$(echo "${OUTPUT}" | grep -v " hg " | grep -v " hx ")"
-
+OUTPUT="$(echo "${OUTPUT}" | grep -v " hg " | grep -v " hx " | awk '{$1=$1;print}')"
 # remove the history line numbers
 OUTPUT="$(echo "${OUTPUT}" | cut -f2- --delimiter=" ")"
 # echo "${OUTPUT}"

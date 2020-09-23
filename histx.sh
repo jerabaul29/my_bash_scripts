@@ -11,7 +11,7 @@ function hx() {
   # TODO: automate how to set the PATH_TO_SAVELAST and share it with histx
   PATH_TO_SAVELAST="/home/jrlab/Desktop/Git/MyBashScripts/Data/last_histg_output"
 
-  SELECTED_COMMAND="$(head -$1 ${PATH_TO_SAVELAST} | tail -1 | tr -s ' ' | cut -d ' ' -f 4-)"
+  SELECTED_COMMAND="$(head -$1 ${PATH_TO_SAVELAST} | tail -1 | tr -s ' ' | awk '{$1=$1;print}' | cut -d ' ' -f 2-)"
   echo "${SELECTED_COMMAND}"
   eval ${SELECTED_COMMAND}
 }
