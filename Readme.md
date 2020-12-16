@@ -45,7 +45,7 @@ jrlab@jrlab-T150s:~/Desktop/Git/Example_Debug_Macros_arduino/src$ hx 1
 success
 ```
 
-The *hg* and *hx* functions can be made available by putting the following in the bashrc:
+The *hg* and *hx* functions can be made available by putting the following in the bashrc (you will need to adapt your paths):
 
  ```
 alias hg='/home/jrlab/Desktop/Git/MyBashScripts/histg.sh'
