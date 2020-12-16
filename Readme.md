@@ -56,9 +56,9 @@ alias hg='/home/jrlab/Desktop/Git/MyBashScripts/histg.sh'
 
 While I love using *z*, sometimes I wish I get to see all results that match a search and easily choose one of them. To do this, I have implemented a script (*zg.sh*) and a function (*zg.z*) that work on the same model as *histg* and *histx*.
 
-To use them easily, simply add to your bashrc:
+To use them easily, simply add to your bashrc (you will need to adapt your paths to where you put the scripts):
 
-```
+```bash
 alias zg='/home/jrlab/Desktop/Git/MyBashScripts/zg.sh'
 . /home/jrlab/Desktop/Git/MyBashScripts/zx.sh
 ``` 
