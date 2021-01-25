@@ -1,6 +1,6 @@
 # My bash scripts
 
-This folder contains a few bash scripts I use on my machines. You can read a bit more about some of those scripts here: https://folk.uio.no/jeanra/Informatics/increasing_bash_productivity.html .
+This folder contains a few bash scripts I use on my machines. You can read a bit more about some of those scripts here: https://jerabaul29.github.io/jekyll/update/2020/12/16/tips-hg-hx-zg-zx.html .
 
 To add a bash script to the terminal:
 
@@ -18,7 +18,7 @@ alias script_prepare_figures='/home/jrlab/Desktop/Git/MyBashScripts/script_prepa
 
 A script to trim, convert to pdf, and reduce size of images. Useful to run for example on the /Figures folder of a LaTex project. 
 
-## script_compile_latex.sh
+## script_compile_LaTex.sh
 
 A script to compile a LaTex project including references and diff file. To avoid multiple repetitive pdflatex, bibtex and diff commands. The main file to compile should be called mainfile.tex. The previous version on which to compute the diff should be called previous.tex.
 
