@@ -105,6 +105,6 @@ function get_level
             echo "${CRRT_STATUS}"
             ;;
     esac
-} > /var/log/script_shutdown_low_battery 2>&1
+} >| /var/log/script_shutdown_low_battery 2>&1
 # NOTE: to perform some dry run and test, may need to use another location if not working as root
 # } >| /home/jr/Desktop/Current/test_script_shutdown_battery/script_shutdown_low_battery 2>&1
