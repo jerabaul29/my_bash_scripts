@@ -11,7 +11,8 @@
 ##############################################
 # SETUP
 #
-# set the XX_SET_PATH to the log file
+# set the path to the log file at the destination of the
+# pipe if you do not want to use the "default" location
 #
 # To make it run automatically, put it in crontab:
 # sudo crontab -e
@@ -76,5 +77,5 @@ function wait_online
 	apt-get update
 	apt-get upgrade -y
 	apt-get autoremove
-} >> XX_SET_PATH 2>&1
+} >> /var/log/script_update_upgrade_autoremove 2>&1
 
