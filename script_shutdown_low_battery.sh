@@ -89,7 +89,7 @@ function get_level
             echo "discharging"
 
             CRRT_LEVEL="$(get_level)"
-            if [[ "$CRRT_LEVEL" -lt 50 ]]
+            if [[ "$CRRT_LEVEL" -lt 25 ]]
             then
                 echo "need to shutdown, low battery"
                 sudo shutdown now
