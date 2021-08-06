@@ -76,6 +76,6 @@ function wait_online
 	echo "now start update upgrade..."
 	apt-get update
 	apt-get upgrade -y
-	apt-get autoremove
+	apt-get autoremove -y
 } >> /var/log/script_update_upgrade_autoremove 2>&1
 
