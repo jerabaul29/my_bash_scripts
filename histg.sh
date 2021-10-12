@@ -13,9 +13,9 @@ if [ "$1" == "-h" ]; then
 fi
 
 # TODO: automate how to recover HISTSIZE and share it with bash_rc
-HISTSIZE=100000            # need this, because does not read .bashrc so does not know how big a HISTSIZE
-HISTFILE=~/.bash_history   # Or wherever you bash history file lives
-set -o history             # enable history
+HISTSIZE=100000              # need this, because does not read .bashrc so does not know how big a HISTSIZE
+HISTFILE="~/.bash_history"   # Or wherever you bash history file lives
+set -o history               # enable history
 
 # TODO: automate how to set the PATH_TO_SAVELAST and share it with histx
 PATH_TO_SAVELAST="/home/jrlab/Desktop/Git/MyBashScripts/Data/last_histg_output"
